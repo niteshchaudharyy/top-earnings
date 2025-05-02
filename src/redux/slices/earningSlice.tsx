@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import moment from 'moment';
 import { getTopEarningsForWeek, Earnings } from '../../utils';
 const { REACT_APP_API_BASE_URL, REACT_APP_TOKEN } = process.env;
 
@@ -21,8 +22,9 @@ export const getLatestEarnings = createAsyncThunk(
   'earnings/getLatestEarnings',
   async (_, { rejectWithValue, dispatch }) => {
     try {
+      const today = moment().format('YYYY-MM-DD');
       const { data }: { data: { earnings: Earnings[] } } = await axios.get(
-        `${REACT_APP_API_BASE_URL}/v2.1/calendar/earnings?token=${REACT_APP_TOKEN}&parameters%5Bdate_from%5D=2025-01-02&parameters%5Bdate_to%5D=2025-05-02&parameters%5Bdate_sort%5D=date&pagesize=1000`,
+        `${REACT_APP_API_BASE_URL}/v2.1/calendar/earnings?token=${REACT_APP_TOKEN}&parameters%5Bdate_to%5D=${today}&parameters%5Bdate_sort%5D=date&pagesize=1000`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -74,7 +76,6 @@ export const fetchLogos = createAsyncThunk(
         },
         {}
       );
-      console.log(result, 'logos');
       return result;
     } catch (error) {
       return rejectWithValue(error);
@@ -102,7 +103,6 @@ export const earningsSlice = createSlice({
       })
       .addCase(getLatestEarnings.rejected, (state, action) => {
         const errorMessage = (action.payload as { message: string })?.message || 'Something went wrong';
-        console.log(errorMessage, 'error');
         state.topEarningsByDay = {};
         state.logos = {};
         state.loading = false;
