@@ -22,7 +22,7 @@ export const getLatestEarnings = createAsyncThunk(
   'earnings/getLatestEarnings',
   async (_, { rejectWithValue, dispatch }) => {
     try {
-      const today = moment().format('YYYY-MM-DD');
+      const today = moment().day(5).format('YYYY-MM-DD');
       const { data }: { data: { earnings: Earnings[] } } = await axios.get(
         `${REACT_APP_API_BASE_URL}/v2.1/calendar/earnings?token=${REACT_APP_TOKEN}&parameters%5Bdate_to%5D=${today}&parameters%5Bdate_sort%5D=date&pagesize=1000`,
         {
