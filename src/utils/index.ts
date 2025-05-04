@@ -33,6 +33,8 @@ export type EarningsResult = {
   AMC: Earnings[];
 };
 
+const zeroRevenue = "0";
+
 export const weekdaysFull = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 // Categorize based on time
@@ -45,7 +47,7 @@ export const categorizeEarningTime = (timeStr: string): "BMO" | "AMC" | "During 
 }
 
 // Get all weekdays in the current week (Mon–Fri)
-function getCurrentWeekDates(): string[] {
+const getCurrentWeekDates = (): string[] => {
   const startOfWeek = moment().startOf("week").add(1, "day"); // Monday
   return Array.from({ length: 5 }, (_, i) => startOfWeek.clone().add(i, "days").format("YYYY-MM-DD"));
 }
@@ -69,9 +71,8 @@ export const getTopEarningsForWeek = (data: Earnings[]): Record<string, Earnings
 
   // Sort by revenue_est
   for (const date of weekDates) {
-    result[date].BMO = result[date].BMO.sort((a, b) => parseFloat(b.revenue_est || "0") - parseFloat(a.revenue_est || "0")).slice(0, 10);
-    result[date].AMC = result[date].AMC.sort((a, b) => parseFloat(b.revenue_est || "0") - parseFloat(a.revenue_est || "0")).slice(0, 10);
+    result[date].BMO = result[date].BMO.sort((a, b) => parseFloat(b.revenue_est || zeroRevenue) - parseFloat(a.revenue_est || zeroRevenue)).slice(0, 10);
+    result[date].AMC = result[date].AMC.sort((a, b) => parseFloat(b.revenue_est || zeroRevenue) - parseFloat(a.revenue_est || zeroRevenue)).slice(0, 10);
   }
-
   return result;
 }

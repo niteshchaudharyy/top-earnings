@@ -42,7 +42,7 @@ const TopEarningsComponent = () => {
                 direction="column"
                 size={{ xs: 1 }}
                 component={"div"}
-                alignContent="center"
+                alignContent="flex-start"
                 justifyContent="center"
                 key={day}
               >
