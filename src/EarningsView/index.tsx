@@ -24,7 +24,7 @@ const TopEarningsComponent = () => {
       <div>
         <h1 className="earnings-title">Top Earnings (This Week)
             <br />
-            Most Anticipated earnings Releases {moment().format("Do MMMM YYYY")}
+            Most Anticipated earnings Releases
         </h1>
         <Grid container columns={5} direction="row" spacing={2}>
           {loading ? (
